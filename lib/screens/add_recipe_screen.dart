@@ -124,7 +124,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
             const SizedBox(height: 16),
 
             // Champ 4 : difficulté (segmented via dropdown)
-            DropdownButtonFormField<String>(
+              DropdownButtonFormField<String>(
               initialValue: _selectedDifficulty,
               decoration: const InputDecoration(
                 labelText: 'Difficulté',
@@ -136,6 +136,12 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _selectedDifficulty = value);
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Merci de choisir une difficulté';
+                }
+                return null;
               },
             ),
             const SizedBox(height: 16),
