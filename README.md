@@ -1,118 +1,54 @@
-# 🍽️ Mes Recettes — App Flutter multi-écrans
+# Mes Recettes - App Flutter
 
-Application Flutter de démonstration sur le thème des **recettes de cuisine**.
-Projet réalisé pour valider la maîtrise des widgets Flutter, de la navigation
-et de la séparation UI / données.
+Application mobile développée avec Flutter dans le cadre d'un exercice sur la navigation multi-écrans.
 
-## 📱 Aperçu
+Le thème choisi : une app de recettes de cuisine, avec une liste de recettes, une page de détail, un formulaire pour en ajouter une nouvelle, et un écran de paramètres pour changer de thème.
 
-| Accueil | Détail | Formulaire | Paramètres |
-|---|---|---|---|
-| ![Accueil](screenshots/home.png) | ![Détail](screenshots/detail.png) | ![Formulaire](screenshots/form.png) | ![Paramètres](screenshots/settings.png) |
+## Fonctionnalités
 
-> Remplace les images dans `screenshots/` par tes propres captures d'écran
-> une fois l'app lancée (voir section Lancement ci-dessous).
+- 4 écrans : Accueil, Détail d'une recette, Formulaire d'ajout, Paramètres
+- Navigation gérée avec GoRouter (routes nommées)
+- Recherche par nom de recette + filtre par catégorie sur l'écran d'accueil
+- Écran de détail qui reçoit l'id de la recette passé dans l'URL
+- Formulaire avec validation sur 5 champs (titre, catégorie, temps de préparation, difficulté, description)
+- Thème clair/sombre à activer depuis les paramètres
+- Affichage responsive : la grille passe de 2 à 4 colonnes selon la largeur de l'écran
 
-## ✅ Fonctionnalités
+## Organisation du code
 
-- **4 écrans distincts** : Accueil (liste), Détail, Formulaire d'ajout, Paramètres
-- **Navigation avec GoRouter** et routes nommées (`AppRoutes` dans `router/app_router.dart`)
-- **Écran de liste** avec recherche texte en temps réel + filtre par catégorie (chips)
-- **Écran de détail** recevant l'`id` de la recette en paramètre d'URL (`/recipe/:id`)
-- **Formulaire avec validation** : 5 champs (titre, catégorie, temps de préparation,
-  difficulté, description), chacun avec ses propres règles de validation
-- **Thème clair / sombre** basculable depuis l'écran Paramètres (persistant pendant
-  la session grâce à `ThemeProvider` + `provider`)
-- **Responsive** : `LayoutBuilder` bascule automatiquement entre 2 colonnes (mobile)
-  et 4 colonnes (tablette, largeur ≥ 700px) dans la grille de recettes
-- **Aucune donnée en dur dans les widgets** : toutes les recettes viennent de
-  `data/recipes_data.dart`, exposées via `RecipeProvider`
-
-## 🧱 Architecture du projet
-
-```
 lib/
-├── main.dart                     # Point d'entrée, thème, providers
-├── models/
-│   └── recipe.dart                # Modèle de données Recipe
-├── data/
-│   └── recipes_data.dart          # Données initiales (mock), isolées de l'UI
-├── providers/
-│   ├── theme_provider.dart        # État du thème clair/sombre
-│   └── recipe_provider.dart       # Liste, recherche, filtres, favoris, ajout
-├── router/
-│   └── app_router.dart            # Routes nommées GoRouter + extensions
-├── screens/
-│   ├── home_screen.dart           # Écran 1 : liste + recherche + filtre
-│   ├── recipe_detail_screen.dart  # Écran 2 : détail (paramètre d'URL)
-│   ├── add_recipe_screen.dart     # Écran 3 : formulaire + validation
-│   └── settings_screen.dart       # Écran 4 : thème + stats
-└── widgets/
-    ├── recipe_card.dart           # Widget réutilisable : carte de recette
-    ├── search_bar_widget.dart     # Widget réutilisable : barre de recherche
-    ├── category_filter_chips.dart # Widget réutilisable : chips de filtre
-    └── empty_state_widget.dart    # Widget réutilisable : état "aucun résultat"
-```
+main.dart
+models/ -> le modèle Recipe
+data/ -> les données de départ (mockées)
+providers/ -> gestion d'état (thème + recettes) avec Provider
+router/ -> configuration GoRouter
+screens/ -> les 4 écrans
+widgets/ -> widgets réutilisables (carte recette, barre de recherche, chips de filtre, état vide)
 
-### Widgets Flutter utilisés (≥ 8 différents)
 
-`Scaffold`, `AppBar` / `SliverAppBar`, `ListView` / `ListView.builder`,
-`GridView.builder`, `Stack`, `Card`, `Form` / `TextFormField`,
-`DropdownButtonFormField`, `ChoiceChip` / `Chip`, `SwitchListTile`,
-`FloatingActionButton`, `CustomScrollView` / `Sliver*`, `InkWell`, `Wrap`.
+J'ai essayé de séparer les données de l'affichage : les écrans ne font qu'afficher ce que les providers leur donnent, rien n'est écrit en dur dans les widgets.
 
-## 🚀 Lancement du projet
+## Comment lancer le projet
 
-### Prérequis
+Il faut avoir Flutter installé sur sa machine.
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) installé (≥ 3.22)
-- Un émulateur Android/iOS, un navigateur (pour le web), ou un appareil physique
-
-### Étapes
-
-```bash
-# 1. Cloner le dépôt
-git clone https://github.com/<ton-utilisateur>/<ton-repo>.git
-cd <ton-repo>
-
-# 2. Installer les dépendances
+git clone https://github.com/TON-PSEUDO/TON-REPO.git
+cd TON-REPO
 flutter pub get
-
-# 3. Vérifier que tout est en ordre (optionnel mais recommandé)
-flutter doctor
-
-# 4. Lancer l'application
 flutter run
-```
 
-Pour tester le mode responsive, lance l'app sur un simulateur tablette
-(ou redimensionne la fenêtre Chrome si tu lances `flutter run -d chrome`) :
-la grille passe de 2 à 4 colonnes au-delà de 700px de large.
 
-### Générer un APK / build
+Un menu va te proposer de choisir un appareil (Chrome, un émulateur si tu en as un configuré, etc.)
 
-```bash
-flutter build apk        # Android
-flutter build web        # Web
-```
+## Technos utilisées
 
-## 🛠️ Stack technique
+- Flutter (Material 3)
+- go_router pour la navigation
+- provider pour la gestion d'état
 
-- **Flutter** (Material 3)
-- [`go_router`](https://pub.dev/packages/go_router) — navigation déclarative, routes nommées
-- [`provider`](https://pub.dev/packages/provider) — gestion d'état (thème + données)
+## Captures d'écran
 
-## 📝 Notes pédagogiques
-
-Ce projet a été conçu pour illustrer, avec un niveau débutant en tête :
-
-1. **Séparer les données de l'affichage** : `models/` + `data/` + `providers/`
-   ne dépendent d'aucun widget. Les écrans ne font que lire ces données.
-2. **Réutiliser des widgets** plutôt que dupliquer du code (`widgets/`).
-3. **Naviguer proprement** avec des routes nommées plutôt que des `Navigator.push`
-   avec des `MaterialPageRoute` dispersés partout.
-4. **Valider un formulaire** avec la classe `Form` et un `GlobalKey<FormState>`.
-
-## 📄 Licence
-
-Projet pédagogique, libre d'utilisation.
+![Accueil](screenshots/home.png)
+![Détail](screenshots/detail.png)
+![Formulaire](screenshots/form.png)
+![Paramètres](screenshots/settings.png)
